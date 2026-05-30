@@ -183,16 +183,26 @@ body {
 
 /* ─── YES / NO BUTTONS ───────────────────────────────────────── */
 .btn-group {
-  display: flex; gap: 1rem; justify-content: center;
-  flex-wrap: wrap; position: relative; min-height: 60px;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+  min-height: 60px;
 }
 
 .btn {
-  padding: 0.75rem 2rem; border: none;
-  border-radius: 60px; font-family: 'DM Sans', sans-serif;
-  font-size: 1rem; font-weight: 400; cursor: none;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 60px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: none;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   letter-spacing: 0.05em;
+  min-width: 10rem;
 }
 
 .btn-yes {
@@ -210,12 +220,27 @@ body {
   background: transparent;
   border: 1px solid var(--glass-border);
   color: var(--text-dim);
-  position: relative;   /* sits beside YES in normal flow */
+  position: relative;
   transition: font-size 0.2s ease, opacity 0.25s ease;
   white-space: nowrap;
 }
 .btn-no.evading {
-  position: fixed;      /* detaches and flies around the screen */
+  position: fixed;
+  z-index: 1000;
+}
+
+@media (max-width: 640px) {
+  .btn-group {
+    flex-direction: column;
+    gap: 0.85rem;
+    min-height: auto;
+  }
+
+  .btn {
+    width: min(100%, 320px);
+    min-width: 0;
+    padding: 0.85rem 1.5rem;
+  }
 }
 
 .no-message {

@@ -239,15 +239,30 @@ let yesScale = 1;
 
 // Place NO button right beside YES using YES's screen coordinates
 function placeNoBesideYes() {
-  const r   = btnYes.getBoundingClientRect();
-  const noW = 90;  // approximate NO button width
-  const noH = 42;  // approximate NO button height
-  // Sit right after YES with a small gap, vertically centered with it
-  let left = r.right + 14;
-  let top  = r.top + (r.height / 2) - (noH / 2);
-  // Hard clamp to viewport
-  left = Math.min(left, window.innerWidth  - noW - 8);
-  top  = Math.max(8,    Math.min(top, window.innerHeight - noH - 8));
+  const yesRect = btnYes.getBoundingClientRect();
+  const noRect  = btnNo.getBoundingClientRect();
+  const noW = noRect.width || 90;
+  const noH = noRect.height || 42;
+  const gap = 12;
+
+  let left;
+  const rightSpace = window.innerWidth - yesRect.right - gap - 8;
+  const leftSpace  = yesRect.left - gap - 8;
+
+  if (rightSpace >= noW) {
+    left = yesRect.right + gap;
+  } else if (leftSpace >= noW) {
+    left = yesRect.left - gap - noW;
+  } else {
+    // fallback: place below or above YES if there isn't enough horizontal room
+    left = Math.max(8, Math.min(window.innerWidth - noW - 8, yesRect.left));
+  }
+
+  let top = yesRect.top + (yesRect.height - noH) / 2;
+  if (top < 8) top = yesRect.bottom + gap;
+  if (top + noH > window.innerHeight - 8) top = yesRect.top - noH - gap;
+  top = Math.max(8, Math.min(top, window.innerHeight - noH - 8));
+
   btnNo.style.left = left + 'px';
   btnNo.style.top  = top  + 'px';
 }
@@ -262,6 +277,12 @@ function placeNoRandom() {
   btnNo.style.left = (pad + Math.random() * Math.max(1, maxX - pad)) + 'px';
   btnNo.style.top  = (pad + Math.random() * Math.max(1, maxY - pad)) + 'px';
 }
+
+window.addEventListener('resize', () => {
+  if (btnNo.classList.contains('evading')) {
+    placeNoBesideYes();
+  }
+});
 
 function evadeNo(e) {
   e.preventDefault();
