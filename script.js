@@ -62,20 +62,8 @@ const TIMELINE = [
 const LETTER_LINES = [
   "My love,",
   "",
-  "A year ago I couldn't have imagined how much my life would change.",
-  "Then you happened — quietly, completely, and all at once.",
   "",
-  "You've made the ordinary extraordinary.",
-  "The small moments feel like gifts because you're in them.",
-  "",
-  "Thank you for your patience, your laughter,",
-  "your honesty, and your heart.",
-  "Thank you for choosing me, over and over.",
-  "",
-  "This is just the beginning of our story,",
-  "and I can't wait to write every page with you.",
-  "",
-  "Forever yours ❤️",
+  "Happy 4th anniversary to us. I still cannot believe we made it this far, especially after 3 years of long distance where all we had were calls, messages, and waiting for each other. It was not easy, but we still chose each other every day and never gave up. Now we are finally together personally for our 4th year anniversary, and it feels so different in the best way. I get to see you, talk to you, and be with you for real, not just through a screen. Being close to you makes me love you even more, and the small things I used to miss now feel so special when I experience them beside you. Thank you for staying, for waiting, and for loving me through the distance. I am really proud of us, and I will always choose you. I Love You So Much.",
 ];
 
 /* ─── END OF EDITABLE SECTION ────────────────────────────────── */
