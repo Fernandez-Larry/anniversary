@@ -210,8 +210,11 @@ body {
   background: transparent;
   border: 1px solid var(--glass-border);
   color: var(--text-dim);
-  position: fixed;           /* will be repositioned via JS */
+  position: relative;        /* starts beside YES button */
   transition: transform 0.15s ease, font-size 0.2s ease;
+}
+.btn-no.evading {
+  position: fixed;           /* switches to fixed when evading */
 }
 
 .no-message {

@@ -234,8 +234,11 @@ const btnNo  = document.getElementById('btn-no');
 const btnYes = document.getElementById('btn-yes');
 const noMsg  = document.getElementById('no-msg');
 
-let noScale  = 1;
-let yesScale = 1;
+let noScale      = 1;
+let yesScale     = 1;
+const NO_MIN     = 0.35;
+const NO_SHRINK  = 0.1;
+const YES_GROW   = 0.06;
 
 function positionNoBtn() {
   if (!btnNo) return;
@@ -250,31 +253,40 @@ function evadeNo(e) {
   e.preventDefault();
   noAttempts++;
 
-  // First evasion: switch from relative to fixed
+  // First evasion: switch from relative (beside YES) to fixed (flies around)
   if (!btnNo.classList.contains('evading')) {
     btnNo.classList.add('evading');
   }
 
+  // Always teleport to a new random spot
   positionNoBtn();
 
-  // Shrink NO, grow YES
-  noScale  = Math.max(0.3, noScale  - 0.08);
-  yesScale = Math.min(2.0, yesScale + 0.06);
-  btnNo.style.fontSize  = noScale  * 1  + 'rem';
-  btnYes.style.fontSize = yesScale * 1  + 'rem';
+  // Shrink NO each attempt
+  noScale -= NO_SHRINK;
+
+  // When it hits minimum size, reset and reappear at a new random spot
+  if (noScale <= NO_MIN) {
+    noScale = 1;
+    btnNo.style.opacity = '0';
+    setTimeout(() => {
+      positionNoBtn();
+      btnNo.style.opacity = '1';
+      btnNo.style.fontSize = noScale + 'rem';
+    }, 300);
+  }
+
+  btnNo.style.fontSize = noScale + 'rem';
+
+  // Grow YES (caps at 2x)
+  yesScale = Math.min(2.0, yesScale + YES_GROW);
+  btnYes.style.fontSize = yesScale + 'rem';
   btnYes.style.padding  = `${0.75 * yesScale}rem ${2 * yesScale}rem`;
 
-  // Show message
-  const msg = noMessages[Math.min(noAttempts - 1, noMessages.length - 1)];
+  // Cycle through messages forever
+  const msg = noMessages[(noAttempts - 1) % noMessages.length];
   noMsg.textContent = msg;
   noMsg.style.animation = 'none';
   requestAnimationFrame(() => { noMsg.style.animation = ''; });
-
-  // Hide NO after enough attempts
-  if (noAttempts >= 8) {
-    btnNo.style.display = 'none';
-    noMsg.textContent = "The answer is YES 💖";
-  }
 }
 
 /* ─── YES! ───────────────────────────────────────────────────── */
