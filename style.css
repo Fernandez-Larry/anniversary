@@ -210,11 +210,12 @@ body {
   background: transparent;
   border: 1px solid var(--glass-border);
   color: var(--text-dim);
-  position: relative;        /* starts beside YES button */
-  transition: transform 0.15s ease, font-size 0.2s ease;
+  position: relative;        /* starts in normal flow beside YES */
+  transition: font-size 0.2s ease, opacity 0.3s ease;
 }
 .btn-no.evading {
-  position: fixed;           /* switches to fixed when evading */
+  position: fixed;           /* goes fixed once user tries to click it */
+  transition: font-size 0.2s ease, opacity 0.3s ease;
 }
 
 .no-message {

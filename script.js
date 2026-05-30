@@ -240,26 +240,40 @@ const NO_MIN     = 0.35;
 const NO_SHRINK  = 0.1;
 const YES_GROW   = 0.06;
 
-function getYesRect() {
-  return btnYes.getBoundingClientRect();
+function snapNoBesideYes() {
+  // Read YES button's live position and place NO right next to it
+  const r   = btnYes.getBoundingClientRect();
+  const noH = btnNo.offsetHeight || 42;
+  const noW = btnNo.offsetWidth  || 80;
+  let left  = r.right + 12;
+  let top   = r.top + (r.height - noH) / 2;
+  // Safety clamp so it never goes off-screen
+  left = Math.min(left, window.innerWidth  - noW - 10);
+  top  = Math.max(10, Math.min(top, window.innerHeight - noH - 10));
+  btnNo.style.left = left + 'px';
+  btnNo.style.top  = top  + 'px';
 }
 
-function positionNoBesideYes() {
-  // Place NO button directly to the right of YES, same vertical center
-  const r = getYesRect();
-  btnNo.style.left = (r.right + 12) + 'px';
-  btnNo.style.top  = (r.top + r.height / 2 - (btnNo.offsetHeight || 40) / 2) + 'px';
+function randomNoPosition() {
+  const noW = btnNo.offsetWidth  || 80;
+  const noH = btnNo.offsetHeight || 42;
+  const pad = 80;
+  const maxL = window.innerWidth  - noW - pad;
+  const maxT = window.innerHeight - noH - pad;
+  btnNo.style.left = (pad + Math.random() * Math.max(0, maxL - pad)) + 'px';
+  btnNo.style.top  = (pad + Math.random() * Math.max(0, maxT - pad)) + 'px';
 }
 
-function positionNoRandom() {
-  // Random but always safely inside the viewport
-  const btnW = btnNo.offsetWidth  || 80;
-  const btnH = btnNo.offsetHeight || 40;
-  const pad  = 80;
-  const maxL = Math.max(pad, window.innerWidth  - btnW - pad);
-  const maxT = Math.max(pad, window.innerHeight - btnH - pad);
-  btnNo.style.left = (pad + Math.random() * (maxL - pad)) + 'px';
-  btnNo.style.top  = (pad + Math.random() * (maxT - pad)) + 'px';
+function showNoBesideYes() {
+  btnNo.style.opacity = '0';
+  // Wait one frame so layout is settled before reading YES position
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      snapNoBesideYes();
+      btnNo.style.transition = 'opacity 0.3s ease';
+      btnNo.style.opacity = '1';
+    });
+  });
 }
 
 function evadeNo(e) {
@@ -269,30 +283,28 @@ function evadeNo(e) {
   // First evasion: switch from relative (beside YES) to fixed
   if (!btnNo.classList.contains('evading')) {
     btnNo.classList.add('evading');
+    // Immediately snap to beside YES in fixed coords before flying away
+    snapNoBesideYes();
   }
 
-  // Every 5 clicks snap back beside YES, otherwise roam randomly on-screen
+  // Every 5 clicks: return beside YES. Otherwise: random but on-screen.
   if (noAttempts % 5 === 0) {
-    positionNoBesideYes();
+    showNoBesideYes();
   } else {
-    positionNoRandom();
+    randomNoPosition();
   }
 
   // Shrink NO each attempt
   noScale -= NO_SHRINK;
 
-  // When it hits minimum, flash invisible then reset to full size beside YES
+  // When tiny, flash out then reset to full size beside YES
   if (noScale <= NO_MIN) {
     noScale = 1;
-    btnNo.style.opacity = '0';
-    setTimeout(() => {
-      positionNoBesideYes();
-      btnNo.style.opacity = '1';
-      btnNo.style.fontSize = noScale + 'rem';
-    }, 300);
+    btnNo.style.fontSize = noScale + 'rem';
+    showNoBesideYes();
+  } else {
+    btnNo.style.fontSize = noScale + 'rem';
   }
-
-  btnNo.style.fontSize = noScale + 'rem';
 
   // Grow YES (caps at 2x)
   yesScale = Math.min(2.0, yesScale + YES_GROW);
