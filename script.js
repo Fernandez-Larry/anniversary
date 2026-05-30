@@ -44,18 +44,18 @@ const REASONS = [
 
 // Timeline events (edit freely)
 const TIMELINE = [
-  { month: "Month 1",   icon: "🌱", desc: "The beginning — nervous smiles, slow conversations, and a feeling I couldn't quite name yet." },
-  { month: "Month 2",   icon: "☕", desc: "Long coffee dates that stretched into evening. We never ran out of things to say." },
-  { month: "Month 3",   icon: "🌸", desc: "Our first little adventure together. I knew then that I wanted more of this." },
-  { month: "Month 4",   icon: "🎶", desc: "Sharing playlists, discovering our songs. Music suddenly meant more." },
-  { month: "Month 5",   icon: "🌧️", desc: "A rainy day indoors. We laughed, cooked badly, and didn't mind one bit." },
-  { month: "Month 6",   icon: "🌅", desc: "Halfway through the year, and I was already so deeply happy with you." },
-  { month: "Month 7",   icon: "🚗", desc: "Our road trip. Windows down, music loud, zero plan. Perfect." },
-  { month: "Month 8",   icon: "🎉", desc: "We celebrated together for the first time. You made it unforgettable." },
-  { month: "Month 9",   icon: "🌙", desc: "Late-night talks about everything and nothing. Those are my favourites." },
-  { month: "Month 10",  icon: "🤗", desc: "The hard days got easier because you were beside me. Always." },
-  { month: "Month 11",  icon: "✨", desc: "I caught myself thinking — I want this forever." },
-  { month: "Month 12",  icon: "🥂", desc: "A full year. A full heart. Here's to everything that comes next." },
+  { month: "Month 1",   icon: "🌱", desc: "Just the beginning of something we did not fully understand yet, but already felt special" },
+  { month: "Month 2",   icon: "☕", desc: "Slowly getting used to you, like you were meant to be part of my everyday life" },
+  { month: "Month 3",   icon: "🌸", desc: "Still learning each other, but already choosing to stay a little longer every time" },
+  { month: "Month 4",   icon: "🎶", desc: "Small talks, simple moments, and memories that started to mean more than expected" },
+  { month: "Month 5",   icon: "🌧️", desc: "You became my comfort without even trying, and I started noticing it more each day" },
+  { month: "Month 6",   icon: "🌅", desc: "Half a year of us, and somehow it still feels exciting like it was the first week" },
+  { month: "Month 7",   icon: "🚗", desc: "You turned into a habit I never want to break, even on the quiet days" },
+  { month: "Month 8",   icon: "🎉", desc: "Not perfect, not easy, but real in a way that I would still choose over anything else" },
+  { month: "Month 9",   icon: "🌙", desc: "Nine months in, and I still find myself smiling at things that remind me of you" },
+  { month: "Month 10",  icon: "🤗", desc: "We have had ups and downs, but I still end up choosing you in the middle of it all" },
+  { month: "Month 11",  icon: "✨", desc: "Almost a year, and nothing about this feels temporary anymore" },
+  { month: "Month 12",  icon: "🥂", desc: "One year later, and I still look at you like you are my favorite part of every day" },
 ];
 
 // Love letter (edit freely — each string = one line)
