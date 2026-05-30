@@ -278,30 +278,37 @@ function resetNoButtonFlow() {
   btnNo.style.maxWidth = '';
 }
 
-// Place NO at a random spot within the welcome-content card
-function placeNoRandom() {
-  const card = document.querySelector('.welcome-content');
-  if (!card) return;
+// Nudge NO a few pixels away
+function nudgeNoBig() {
+  const currentLeft = parseInt(btnNo.style.left) || 0;
+  const currentTop  = parseInt(btnNo.style.top) || 0;
   
-  const cardRect = card.getBoundingClientRect();
-  const noW = btnNo.offsetWidth || 90;
-  const noH = btnNo.offsetHeight || 42;
-  const pad = 16;
+  // Random direction: nudge by 20-40 pixels
+  const angle = Math.random() * Math.PI * 2;
+  const distance = 25 + Math.random() * 15;
+  const newLeft = currentLeft + Math.cos(angle) * distance;
+  const newTop  = currentTop + Math.sin(angle) * distance;
   
-  // Get random position within card bounds
-  const maxX = Math.max(0, cardRect.width - noW - pad);
-  const maxY = Math.max(0, cardRect.height - noH - pad);
-  const left = Math.max(pad, Math.random() * maxX);
-  const top  = Math.max(pad, Math.random() * maxY);
-  
-  btnNo.style.left = left + 'px';
-  btnNo.style.top  = top  + 'px';
+  btnNo.style.left = newLeft + 'px';
+  btnNo.style.top  = newTop  + 'px';
 }
 
 window.addEventListener('resize', () => {
   window.requestAnimationFrame(() => {
     if (btnNo.classList.contains('evading')) {
-      placeNoRandom();
+      // Clamp position to stay within bounds on resize
+      const groupRect = btnNo.parentElement.getBoundingClientRect();
+      const currentLeft = parseInt(btnNo.style.left) || 0;
+      const currentTop = parseInt(btnNo.style.top) || 0;
+      const noW = btnNo.offsetWidth || 90;
+      const noH = btnNo.offsetHeight || 42;
+      
+      if (currentLeft + noW > groupRect.width) {
+        btnNo.style.left = (groupRect.width - noW - 8) + 'px';
+      }
+      if (currentTop + noH > groupRect.height) {
+        btnNo.style.top = (groupRect.height - noH - 8) + 'px';
+      }
     }
   });
 });
@@ -310,29 +317,29 @@ function evadeNo(e) {
   e.preventDefault();
   noAttempts++;
 
-  // On very first interaction: go fixed and randomly pop in the card
+  // On very first interaction: go fixed and nudge away
   if (!btnNo.classList.contains('evading')) {
     btnNo.classList.add('evading');
-    placeNoRandom();
-    return; // don't respond again until next click
+    nudgeNoBig();
+    return;
   }
 
-  // Every 5 clicks snap back to normal flow, otherwise random in card
-  if (noAttempts % 5 === 0) {
+  // After 2 clicks of evading, return to normal
+  if (noAttempts >= 3) {
     resetNoButtonFlow();
+    noAttempts = 0;
   } else {
-    placeNoRandom();
+    nudgeNoBig();
   }
 
   // Shrink NO
   noScale = Math.max(noScale - 0.1, 0.4);
   btnNo.style.fontSize = noScale + 'rem';
 
-  // When fully shrunk, reset size and return to normal flow
+  // When fully shrunk, reset size
   if (noScale <= 0.41) {
     noScale = 1;
     btnNo.style.fontSize = noScale + 'rem';
-    resetNoButtonFlow();
   }
 
   // Grow YES (caps at 1.8x)
