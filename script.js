@@ -240,51 +240,53 @@ const NO_MIN     = 0.35;
 const NO_SHRINK  = 0.1;
 const YES_GROW   = 0.06;
 
-function positionNoBtn(centerReturn) {
-  if (!btnNo) return;
+function getYesRect() {
+  return btnYes.getBoundingClientRect();
+}
+
+function positionNoBesideYes() {
+  // Place NO button directly to the right of YES, same vertical center
+  const r = getYesRect();
+  btnNo.style.left = (r.right + 12) + 'px';
+  btnNo.style.top  = (r.top + r.height / 2 - (btnNo.offsetHeight || 40) / 2) + 'px';
+}
+
+function positionNoRandom() {
+  // Random but always safely inside the viewport
   const btnW = btnNo.offsetWidth  || 80;
   const btnH = btnNo.offsetHeight || 40;
-
-  if (centerReturn) {
-    // Snap back near center so user never has to scroll/zoom
-    const cx = window.innerWidth  / 2;
-    const cy = window.innerHeight / 2;
-    const offsetX = (Math.random() - 0.5) * 160;
-    const offsetY = (Math.random() - 0.5) * 80 + 70;
-    btnNo.style.left = (cx + offsetX - btnW / 2) + 'px';
-    btnNo.style.top  = (cy + offsetY - btnH / 2) + 'px';
-  } else {
-    // Random but always clamped within visible viewport
-    const pad = 90;
-    const maxL = Math.max(pad, window.innerWidth  - btnW - pad);
-    const maxT = Math.max(pad, window.innerHeight - btnH - pad);
-    btnNo.style.left = (pad + Math.random() * (maxL - pad)) + 'px';
-    btnNo.style.top  = (pad + Math.random() * (maxT - pad)) + 'px';
-  }
+  const pad  = 80;
+  const maxL = Math.max(pad, window.innerWidth  - btnW - pad);
+  const maxT = Math.max(pad, window.innerHeight - btnH - pad);
+  btnNo.style.left = (pad + Math.random() * (maxL - pad)) + 'px';
+  btnNo.style.top  = (pad + Math.random() * (maxT - pad)) + 'px';
 }
 
 function evadeNo(e) {
   e.preventDefault();
   noAttempts++;
 
-  // First evasion: switch from relative (beside YES) to fixed (flies around)
+  // First evasion: switch from relative (beside YES) to fixed
   if (!btnNo.classList.contains('evading')) {
     btnNo.classList.add('evading');
   }
 
-  // Every 5 attempts return near center, otherwise random but always on-screen
-  const returnToCenter = noAttempts % 5 === 0;
-  positionNoBtn(returnToCenter);
+  // Every 5 clicks snap back beside YES, otherwise roam randomly on-screen
+  if (noAttempts % 5 === 0) {
+    positionNoBesideYes();
+  } else {
+    positionNoRandom();
+  }
 
   // Shrink NO each attempt
   noScale -= NO_SHRINK;
 
-  // When it hits minimum, flash invisible then reset to full size near center
+  // When it hits minimum, flash invisible then reset to full size beside YES
   if (noScale <= NO_MIN) {
     noScale = 1;
     btnNo.style.opacity = '0';
     setTimeout(() => {
-      positionNoBtn(true);
+      positionNoBesideYes();
       btnNo.style.opacity = '1';
       btnNo.style.fontSize = noScale + 'rem';
     }, 300);
