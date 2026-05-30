@@ -8,7 +8,7 @@
 /* ─── ✏️  EDIT THESE TO PERSONALISE ─────────────────────────── */
 
 // Anniversary start date (YYYY, MM-1, DD) — month is 0-indexed
-const ANNIVERSARY_DATE = new Date(2024, 5, 1); // e.g. June 1, 2024
+const ANNIVERSARY_DATE = new Date(2022, 5, 11); // June 11, 2022
 
 // Photo captions (edit freely)
 const CAPTIONS = [
