@@ -210,12 +210,12 @@ body {
   background: transparent;
   border: 1px solid var(--glass-border);
   color: var(--text-dim);
-  position: relative;        /* starts in normal flow beside YES */
-  transition: font-size 0.2s ease, opacity 0.3s ease;
+  position: relative;   /* sits beside YES in normal flow */
+  transition: font-size 0.2s ease, opacity 0.25s ease;
+  white-space: nowrap;
 }
 .btn-no.evading {
-  position: fixed;           /* goes fixed once user tries to click it */
-  transition: font-size 0.2s ease, opacity 0.3s ease;
+  position: fixed;      /* detaches and flies around the screen */
 }
 
 .no-message {

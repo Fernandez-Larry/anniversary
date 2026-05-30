@@ -234,84 +234,70 @@ const btnNo  = document.getElementById('btn-no');
 const btnYes = document.getElementById('btn-yes');
 const noMsg  = document.getElementById('no-msg');
 
-let noScale      = 1;
-let yesScale     = 1;
-const NO_MIN     = 0.35;
-const NO_SHRINK  = 0.1;
-const YES_GROW   = 0.06;
+let noScale  = 1;
+let yesScale = 1;
 
-function snapNoBesideYes() {
-  // Read YES button's live position and place NO right next to it
+// Place NO button right beside YES using YES's screen coordinates
+function placeNoBesideYes() {
   const r   = btnYes.getBoundingClientRect();
-  const noH = btnNo.offsetHeight || 42;
-  const noW = btnNo.offsetWidth  || 80;
-  let left  = r.right + 12;
-  let top   = r.top + (r.height - noH) / 2;
-  // Safety clamp so it never goes off-screen
-  left = Math.min(left, window.innerWidth  - noW - 10);
-  top  = Math.max(10, Math.min(top, window.innerHeight - noH - 10));
+  const noW = 90;  // approximate NO button width
+  const noH = 42;  // approximate NO button height
+  // Sit right after YES with a small gap, vertically centered with it
+  let left = r.right + 14;
+  let top  = r.top + (r.height / 2) - (noH / 2);
+  // Hard clamp to viewport
+  left = Math.min(left, window.innerWidth  - noW - 8);
+  top  = Math.max(8,    Math.min(top, window.innerHeight - noH - 8));
   btnNo.style.left = left + 'px';
   btnNo.style.top  = top  + 'px';
 }
 
-function randomNoPosition() {
-  const noW = btnNo.offsetWidth  || 80;
+// Place NO at a random spot that is always fully on-screen
+function placeNoRandom() {
+  const noW = btnNo.offsetWidth  || 90;
   const noH = btnNo.offsetHeight || 42;
-  const pad = 80;
-  const maxL = window.innerWidth  - noW - pad;
-  const maxT = window.innerHeight - noH - pad;
-  btnNo.style.left = (pad + Math.random() * Math.max(0, maxL - pad)) + 'px';
-  btnNo.style.top  = (pad + Math.random() * Math.max(0, maxT - pad)) + 'px';
-}
-
-function showNoBesideYes() {
-  btnNo.style.opacity = '0';
-  // Wait one frame so layout is settled before reading YES position
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      snapNoBesideYes();
-      btnNo.style.transition = 'opacity 0.3s ease';
-      btnNo.style.opacity = '1';
-    });
-  });
+  const pad = 60;
+  const maxX = window.innerWidth  - noW - pad;
+  const maxY = window.innerHeight - noH - pad;
+  btnNo.style.left = (pad + Math.random() * Math.max(1, maxX - pad)) + 'px';
+  btnNo.style.top  = (pad + Math.random() * Math.max(1, maxY - pad)) + 'px';
 }
 
 function evadeNo(e) {
   e.preventDefault();
   noAttempts++;
 
-  // First evasion: switch from relative (beside YES) to fixed
+  // On very first interaction: go fixed and immediately sit beside YES
   if (!btnNo.classList.contains('evading')) {
     btnNo.classList.add('evading');
-    // Immediately snap to beside YES in fixed coords before flying away
-    snapNoBesideYes();
+    placeNoBesideYes();
+    return; // don't fly away on the very first touch
   }
 
-  // Every 5 clicks: return beside YES. Otherwise: random but on-screen.
+  // Every 5 clicks snap back beside YES, otherwise random on-screen
   if (noAttempts % 5 === 0) {
-    showNoBesideYes();
+    placeNoBesideYes();
   } else {
-    randomNoPosition();
+    placeNoRandom();
   }
 
-  // Shrink NO each attempt
-  noScale -= NO_SHRINK;
+  // Shrink NO
+  noScale = Math.max(noScale - 0.1, 0.4);
+  btnNo.style.fontSize = noScale + 'rem';
 
-  // When tiny, flash out then reset to full size beside YES
-  if (noScale <= NO_MIN) {
+  // When fully shrunk, reset size and return beside YES
+  if (noScale <= 0.41) {
     noScale = 1;
     btnNo.style.fontSize = noScale + 'rem';
-    showNoBesideYes();
-  } else {
-    btnNo.style.fontSize = noScale + 'rem';
+    placeNoBesideYes();
   }
 
-  // Grow YES (caps at 2x)
-  yesScale = Math.min(2.0, yesScale + YES_GROW);
+  // Grow YES (caps at 1.8x)
+  yesScale = Math.min(1.8, yesScale + 0.06);
   btnYes.style.fontSize = yesScale + 'rem';
   btnYes.style.padding  = `${0.75 * yesScale}rem ${2 * yesScale}rem`;
 
-  // Cycle through messages forever
+  // Cycle messages
   const msg = noMessages[(noAttempts - 1) % noMessages.length];
   noMsg.textContent = msg;
   noMsg.style.animation = 'none';
