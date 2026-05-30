@@ -240,13 +240,27 @@ const NO_MIN     = 0.35;
 const NO_SHRINK  = 0.1;
 const YES_GROW   = 0.06;
 
-function positionNoBtn() {
+function positionNoBtn(centerReturn) {
   if (!btnNo) return;
-  const margin = 60;
-  const vw = window.innerWidth  - margin;
-  const vh = window.innerHeight - margin;
-  btnNo.style.left = Math.random() * (vw - 100) + margin/2 + 'px';
-  btnNo.style.top  = Math.random() * (vh - 50)  + margin/2 + 'px';
+  const btnW = btnNo.offsetWidth  || 80;
+  const btnH = btnNo.offsetHeight || 40;
+
+  if (centerReturn) {
+    // Snap back near center so user never has to scroll/zoom
+    const cx = window.innerWidth  / 2;
+    const cy = window.innerHeight / 2;
+    const offsetX = (Math.random() - 0.5) * 160;
+    const offsetY = (Math.random() - 0.5) * 80 + 70;
+    btnNo.style.left = (cx + offsetX - btnW / 2) + 'px';
+    btnNo.style.top  = (cy + offsetY - btnH / 2) + 'px';
+  } else {
+    // Random but always clamped within visible viewport
+    const pad = 90;
+    const maxL = Math.max(pad, window.innerWidth  - btnW - pad);
+    const maxT = Math.max(pad, window.innerHeight - btnH - pad);
+    btnNo.style.left = (pad + Math.random() * (maxL - pad)) + 'px';
+    btnNo.style.top  = (pad + Math.random() * (maxT - pad)) + 'px';
+  }
 }
 
 function evadeNo(e) {
@@ -258,18 +272,19 @@ function evadeNo(e) {
     btnNo.classList.add('evading');
   }
 
-  // Always teleport to a new random spot
-  positionNoBtn();
+  // Every 5 attempts return near center, otherwise random but always on-screen
+  const returnToCenter = noAttempts % 5 === 0;
+  positionNoBtn(returnToCenter);
 
   // Shrink NO each attempt
   noScale -= NO_SHRINK;
 
-  // When it hits minimum size, reset and reappear at a new random spot
+  // When it hits minimum, flash invisible then reset to full size near center
   if (noScale <= NO_MIN) {
     noScale = 1;
     btnNo.style.opacity = '0';
     setTimeout(() => {
-      positionNoBtn();
+      positionNoBtn(true);
       btnNo.style.opacity = '1';
       btnNo.style.fontSize = noScale + 'rem';
     }, 300);
