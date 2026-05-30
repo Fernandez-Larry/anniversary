@@ -216,9 +216,6 @@ function initWelcome() {
     requestAnimationFrame(animate);
   }
   animate();
-
-  // Position NO button initially
-  positionNoBtn();
 }
 
 /* ─── NO BUTTON EVASION ──────────────────────────────────────── */
@@ -252,6 +249,11 @@ function positionNoBtn() {
 function evadeNo(e) {
   e.preventDefault();
   noAttempts++;
+
+  // First evasion: switch from relative to fixed
+  if (!btnNo.classList.contains('evading')) {
+    btnNo.classList.add('evading');
+  }
 
   positionNoBtn();
 
