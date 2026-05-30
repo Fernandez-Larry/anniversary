@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Anniversary ❤️</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       LOADING SCREEN
+  ══════════════════════════════════════════ -->
+  <div id="loading-screen">
+    <div class="loading-heart">❤️</div>
+    <p class="loading-text">Loading something special…</p>
+  </div>
+
+  <!-- Cursor trail container -->
+  <div id="cursor-trail"></div>
+
+  <!-- Falling hearts container -->
+  <div id="falling-hearts"></div>
+
+  <!-- Music toggle -->
+  <button id="music-btn" aria-label="Toggle background music">🎵</button>
+  <audio id="bg-music" loop>
+    <!-- Add your audio file as audio/music.mp3 -->
+    <source src="audio/music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- ══════════════════════════════════════════
+       PAGE 1 — WELCOME SCREEN
+  ══════════════════════════════════════════ -->
+  <section id="page-welcome" class="page active">
+    <canvas id="welcome-canvas"></canvas>
+
+    <div class="welcome-content glass">
+      <p class="welcome-pre">— a message for you —</p>
+      <h1 class="welcome-title">Happy Anniversary <span class="heart-inline">❤️</span></h1>
+      <p class="welcome-sub">Will you keep making memories with me?</p>
+
+      <div class="btn-group">
+        <button id="btn-yes" class="btn btn-yes" onclick="handleYes()">YES 💖</button>
+        <button id="btn-no"  class="btn btn-no"  onmouseenter="evadeNo(event)" onclick="evadeNo(event)">NO 😒</button>
+      </div>
+
+      <p id="no-msg" class="no-message"></p>
+    </div>
+
+    <!-- Fireworks canvas (hidden until YES) -->
+    <canvas id="fireworks-canvas"></canvas>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       PAGE 2 — MEMORY TUNNEL
+  ══════════════════════════════════════════ -->
+  <section id="page-tunnel" class="page">
+    <div class="tunnel-bg"></div>
+    <div class="tunnel-content">
+      <div id="typewriter-text" class="typewriter-container"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       MAIN SCROLL CONTAINER (pages 3–8)
+  ══════════════════════════════════════════ -->
+  <div id="main-site" class="hidden">
+
+    <!-- PAGE 3 — PHOTOBOOTH MEMORIES -->
+    <section id="page-gallery" class="section">
+      <div class="section-header">
+        <span class="section-eyebrow">our photobooth</span>
+        <h2 class="section-title">Captured Moments</h2>
+      </div>
+
+      <div class="gallery-grid" id="gallery-grid">
+        <!-- JS will populate these -->
+      </div>
+
+      <!-- Lightbox -->
+      <div id="lightbox" class="lightbox hidden" onclick="closeLightbox(event)">
+        <div class="lightbox-inner">
+          <img id="lightbox-img" src="" alt="Memory" />
+          <p id="lightbox-caption" class="lightbox-caption"></p>
+          <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 4 — TIMELINE -->
+    <section id="page-timeline" class="section section-dark">
+      <div class="section-header">
+        <span class="section-eyebrow">our journey</span>
+        <h2 class="section-title">Our Story</h2>
+      </div>
+
+      <div class="timeline" id="timeline">
+        <!-- JS will populate these -->
+      </div>
+    </section>
+
+    <!-- PAGE 5 — REASONS I LOVE YOU -->
+    <section id="page-reasons" class="section">
+      <div class="section-header">
+        <span class="section-eyebrow">from my heart</span>
+        <h2 class="section-title">Why I Love You</h2>
+      </div>
+
+      <div class="reasons-grid" id="reasons-grid">
+        <!-- JS will populate these -->
+      </div>
+    </section>
+
+    <!-- PAGE 6 — LOVE LETTER -->
+    <section id="page-letter" class="section section-dark">
+      <div class="section-header">
+        <span class="section-eyebrow">written for you</span>
+        <h2 class="section-title">A Letter</h2>
+      </div>
+
+      <div class="envelope-wrapper">
+        <div class="envelope" id="envelope" onclick="openEnvelope()">
+          <div class="envelope-flap"></div>
+          <div class="envelope-body">
+            <span class="envelope-hint">tap to open</span>
+          </div>
+        </div>
+
+        <div class="letter hidden" id="letter">
+          <div class="letter-paper">
+            <div class="letter-lines" id="letter-lines"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 7 — TIME TOGETHER -->
+    <section id="page-counter" class="section">
+      <div class="section-header">
+        <span class="section-eyebrow">every second counts</span>
+        <h2 class="section-title">Time Together</h2>
+      </div>
+
+      <div class="counter-grid">
+        <div class="counter-card glow">
+          <span class="counter-num" id="c-days">000</span>
+          <span class="counter-label">Days</span>
+        </div>
+        <div class="counter-card glow">
+          <span class="counter-num" id="c-hours">00</span>
+          <span class="counter-label">Hours</span>
+        </div>
+        <div class="counter-card glow">
+          <span class="counter-num" id="c-mins">00</span>
+          <span class="counter-label">Minutes</span>
+        </div>
+        <div class="counter-card glow">
+          <span class="counter-num" id="c-secs">00</span>
+          <span class="counter-label">Seconds</span>
+        </div>
+      </div>
+
+      <p class="counter-since">since the day we began ❤️</p>
+    </section>
+
+    <!-- PAGE 8 — FINAL SURPRISE -->
+    <section id="page-final" class="section section-dark">
+      <canvas id="stars-canvas"></canvas>
+      <div class="final-content">
+        <div class="final-hearts-float" id="final-hearts"></div>
+        <h2 class="final-title">And this is only the beginning</h2>
+        <span class="final-heart">❤️</span>
+        <button class="btn btn-replay" onclick="replayStory()">↩ Replay Our Story</button>
+      </div>
+    </section>
+
+  </div><!-- /main-site -->
+
+  <script src="script.js"></script>
+</body>
+</html>
