@@ -267,15 +267,30 @@ function placeNoBesideYes() {
   btnNo.style.top  = top  + 'px';
 }
 
+function resetNoButtonFlow() {
+  btnNo.classList.remove('evading');
+  btnNo.style.left = '';
+  btnNo.style.top = '';
+  btnNo.style.width = '';
+  btnNo.style.maxWidth = '';
+}
+
 // Place NO at a random spot that is always fully on-screen
 function placeNoRandom() {
-  const noW = btnNo.offsetWidth  || 90;
+  const maxWidth = Math.min(280, window.innerWidth - 16);
+  if (btnNo.offsetWidth > maxWidth) {
+    btnNo.style.width = maxWidth + 'px';
+  }
+
+  const noW = Math.min(btnNo.offsetWidth || 90, window.innerWidth - 16);
   const noH = btnNo.offsetHeight || 42;
-  const pad = 60;
+  const pad = 16;
   const maxX = window.innerWidth  - noW - pad;
   const maxY = window.innerHeight - noH - pad;
-  btnNo.style.left = (pad + Math.random() * Math.max(1, maxX - pad)) + 'px';
-  btnNo.style.top  = (pad + Math.random() * Math.max(1, maxY - pad)) + 'px';
+  const left = Math.max(8, Math.min(pad + Math.random() * Math.max(1, maxX - pad), window.innerWidth - noW - 8));
+  const top  = Math.max(8, Math.min(pad + Math.random() * Math.max(1, maxY - pad), window.innerHeight - noH - 8));
+  btnNo.style.left = left + 'px';
+  btnNo.style.top  = top  + 'px';
 }
 
 window.addEventListener('resize', () => {
@@ -295,9 +310,9 @@ function evadeNo(e) {
     return; // don't fly away on the very first touch
   }
 
-  // Every 5 clicks snap back beside YES, otherwise random on-screen
+  // Every 5 clicks snap back to normal flow, otherwise random on-screen
   if (noAttempts % 5 === 0) {
-    placeNoBesideYes();
+    resetNoButtonFlow();
   } else {
     placeNoRandom();
   }
@@ -306,11 +321,11 @@ function evadeNo(e) {
   noScale = Math.max(noScale - 0.1, 0.4);
   btnNo.style.fontSize = noScale + 'rem';
 
-  // When fully shrunk, reset size and return beside YES
+  // When fully shrunk, reset size and return to normal flow
   if (noScale <= 0.41) {
     noScale = 1;
     btnNo.style.fontSize = noScale + 'rem';
-    placeNoBesideYes();
+    resetNoButtonFlow();
   }
 
   // Grow YES (caps at 1.8x)

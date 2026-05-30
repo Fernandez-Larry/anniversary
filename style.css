@@ -227,19 +227,22 @@ body {
 .btn-no.evading {
   position: fixed;
   z-index: 1000;
+  max-width: 80vw;
+  width: auto;
 }
 
 @media (max-width: 640px) {
   .btn-group {
-    flex-direction: column;
+    flex-direction: row;
     gap: 0.85rem;
     min-height: auto;
+    justify-content: center;
   }
 
   .btn {
-    width: min(100%, 320px);
+    width: min(48%, 260px);
     min-width: 0;
-    padding: 0.85rem 1.5rem;
+    padding: 0.75rem 1.1rem;
   }
 }
 
