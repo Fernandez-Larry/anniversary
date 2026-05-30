@@ -280,21 +280,8 @@ function resetNoButtonFlow() {
 
 // Place NO at a random spot that is always fully on-screen
 function placeNoRandom() {
-  const groupRect = btnNo.parentElement.getBoundingClientRect();
-  const safeWidth = Math.max(80, Math.min(280, groupRect.width - 16));
-  if (btnNo.offsetWidth > safeWidth) {
-    btnNo.style.width = safeWidth + 'px';
-  }
-
-  const noW = Math.min(btnNo.offsetWidth || 90, safeWidth);
-  const noH = btnNo.offsetHeight || 42;
-  const pad = 16;
-  const maxX = Math.max(8, groupRect.width - noW - pad);
-  const maxY = Math.max(8, groupRect.height - noH - pad);
-  const left = Math.max(8, Math.min(pad + Math.random() * maxX, groupRect.width - noW - 8));
-  const top  = Math.max(8, Math.min(pad + Math.random() * maxY, groupRect.height - noH - 8));
-  btnNo.style.left = left + 'px';
-  btnNo.style.top  = top  + 'px';
+  // Keep NO button always beside YES - no random roaming
+  placeNoBesideYes();
 }
 
 window.addEventListener('resize', () => {
@@ -527,7 +514,8 @@ function buildGallery() {
     card.style.transform = `rotate(${rot}deg)`;
 
     const img = document.createElement('img');
-    img.src  = `images/photo${i + 1}.jpg`;
+    const ext = ['png', 'png', 'png', 'png', 'jpeg', 'png', 'png', 'png', 'png', 'jpeg', 'png', 'jpeg'];
+    img.src  = `images/photo${i + 1}.${ext[i]}`;
     img.alt  = CAPTIONS[i];
     img.loading = 'lazy';
     // Fallback placeholder
