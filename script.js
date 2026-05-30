@@ -277,12 +277,12 @@ function resetNoButtonFlow() {
 
 // Place NO at a random spot that is always fully on-screen
 function placeNoRandom() {
-  const maxWidth = Math.min(280, window.innerWidth - 16);
-  if (btnNo.offsetWidth > maxWidth) {
-    btnNo.style.width = maxWidth + 'px';
+  const safeWidth = Math.max(80, Math.min(280, window.innerWidth - 16));
+  if (btnNo.offsetWidth > safeWidth) {
+    btnNo.style.width = safeWidth + 'px';
   }
 
-  const noW = Math.min(btnNo.offsetWidth || 90, window.innerWidth - 16);
+  const noW = Math.min(btnNo.offsetWidth || 90, Math.max(80, window.innerWidth - 16));
   const noH = btnNo.offsetHeight || 42;
   const pad = 16;
   const maxX = window.innerWidth  - noW - pad;
@@ -294,9 +294,13 @@ function placeNoRandom() {
 }
 
 window.addEventListener('resize', () => {
-  if (btnNo.classList.contains('evading')) {
-    placeNoBesideYes();
-  }
+  window.requestAnimationFrame(() => {
+    if (btnNo.classList.contains('evading')) {
+      placeNoBesideYes();
+    } else if (btnNo.style.left || btnNo.style.top) {
+      placeNoBesideYes();
+    }
+  });
 });
 
 function evadeNo(e) {
