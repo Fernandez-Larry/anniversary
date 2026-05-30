@@ -28,18 +28,18 @@ const CAPTIONS = [
 
 // Reasons + expanded detail (edit freely)
 const REASONS = [
-  { short: "Your smile ❤️",      detail: "The way you smile lights up every room — and every corner of my heart." },
-  { short: "Your laugh ❤️",      detail: "I would do anything to hear you laugh. It's my favourite sound in the world." },
-  { short: "Your kindness ❤️",   detail: "You see the best in everyone. It makes me want to be better too." },
-  { short: "Your support ❤️",    detail: "You believed in me when I didn't believe in myself. That means everything." },
-  { short: "Your hugs ❤️",       detail: "Home is wherever you're holding me." },
-  { short: "Your patience ❤️",   detail: "You wait for me, understand me, and never rush me. I'm so grateful." },
-  { short: "The memories ❤️",    detail: "Every single moment with you is one I never want to forget." },
-  { short: "Your honesty ❤️",    detail: "You tell me the truth with so much love. I trust you completely." },
-  { short: "Your weirdness ❤️",  detail: "You match my chaos perfectly. Two weirdos, one perfect pair." },
-  { short: "Your strength ❤️",   detail: "Watching you face challenges inspires me every single day." },
-  { short: "Your heart ❤️",      detail: "You love deeply and fiercely. I'm so lucky to be loved by you." },
-  { short: "Being yours ❤️",     detail: "Knowing I get to call you mine is the greatest gift." },
+  { short: "Your smile ❤️",      detail: "The way it instantly changes my mood and makes even the worst days feel soft and worth it" },
+  { short: "Your laugh ❤️",      detail: "My favorite sound in the world, the one I never get tired of hearing no matter how many times I do" },
+  { short: "Your kindness ❤️",   detail: "The way you care so naturally that it makes me believe good people still exist in this world" },
+  { short: "Your support ❤️",    detail: "You make me feel like I can do anything just by being beside me and believing in me" },
+  { short: "Your hugs ❤️",       detail: "The only place where I feel completely safe, calm, and like nothing else in the world matters" },
+  { short: "Your patience ❤️",   detail: "The way you stay gentle even when things are hard, showing me love in its quietest form" },
+  { short: "The memories ❤️",    detail: "Every little moment with you turning into something I replay in my head when I miss you" },
+  { short: "Your honesty ❤️",    detail: "The reason I feel so secure with you, because I never have to guess where I stand" },
+  { short: "Your weirdness ❤️",  detail: "The cute little things you do that make me smile even when I am not trying to" },
+  { short: "Your strength ❤️",   detail: "How you keep going even when you are tired, and still manage to care for others" },
+  { short: "Your heart ❤️",      detail: "The most beautiful part of you, the part I never want to lose or take for granted" },
+  { short: "Being yours ❤️",     detail: "The most comforting feeling I have ever known, like I finally found where I am meant to be" },
 ];
 
 // Timeline events (edit freely)
