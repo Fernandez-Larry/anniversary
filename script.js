@@ -220,6 +220,7 @@ function initWelcome() {
 
 /* ─── NO BUTTON EVASION ──────────────────────────────────────── */
 let noAttempts = 0;
+let messageIndex = 0;
 const noMessages = [
   "Are you sure? 🥺",
   "Really sure? 😭",
@@ -347,9 +348,10 @@ function evadeNo(e) {
   btnYes.style.fontSize = yesScale + 'rem';
   btnYes.style.padding  = `${0.75 * yesScale}rem ${2 * yesScale}rem`;
 
-  // Cycle messages
-  const msg = noMessages[(noAttempts - 1) % noMessages.length];
+  // Cycle through all 8 messages
+  const msg = noMessages[messageIndex % noMessages.length];
   noMsg.textContent = msg;
+  messageIndex++;
   noMsg.style.animation = 'none';
   requestAnimationFrame(() => { noMsg.style.animation = ''; });
 }
