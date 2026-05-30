@@ -526,8 +526,13 @@ function showMainSite() {
 function buildGallery() {
   const grid = document.getElementById('gallery-grid');
   const rotations = [-4,-2,-3,3,2,4,-1,1,-3,2,-2,3];
+  const photoFiles = [
+    'photo1.png', 'photo2.png', 'photo3.png', 'photo4.png',
+    'photo5.jpeg', 'photo6.png', 'photo7.png', 'photo8.png',
+    'photo9.jpeg', 'photo10.png', 'photo11.png', 'photo12.jpeg'
+  ];
 
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < photoFiles.length; i++) {
     const rot = rotations[i];
     const card = document.createElement('div');
     card.className = 'polaroid';
@@ -535,8 +540,7 @@ function buildGallery() {
     card.style.transform = `rotate(${rot}deg)`;
 
     const img = document.createElement('img');
-    const ext = ['png', 'png', 'png', 'png', 'jpeg', 'png', 'png', 'png', 'jpeg', 'png', 'png', 'jpeg'];
-    img.src  = `images/photo${i + 1}.${ext[i]}`;
+    img.src  = `images/${photoFiles[i]}`;
     img.alt  = CAPTIONS[i];
     img.loading = 'lazy';
     // Fallback placeholder
