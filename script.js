@@ -12,18 +12,18 @@ const ANNIVERSARY_DATE = new Date(2024, 5, 1); // e.g. June 1, 2024
 
 // Photo captions (edit freely)
 const CAPTIONS = [
-  "The day it all started 💫",
-  "Our first adventure together 🗺️",
-  "Laughing till it hurt 😂❤️",
-  "That rainy afternoon 🌧️",
-  "Our favourite spot 🌸",
-  "Silly faces, serious love 🤪",
-  "Sunset chasing ☀️",
-  "Cozy days in ☕",
-  "Best road trip ever 🚗",
-  "Dancing like no one's watching 💃🕺",
-  "The look that says everything 👀❤️",
-  "365 days and counting 🥂",
+  "Our little world captured in every frame",
+  "First time we felt like us together",
+  "Laughing until everything felt light",
+  "Soft moments we never want to forget",
+  "Our favorite kind of chaos together",
+  "Smiles that say more than words ever could",
+  "Sweet memories frozen in time",
+  "Just us being weird and happy",
+  "No pose just real us",
+  "The kind of love that feels easy",
+  "Every shot feels like home",
+  "Us forever in little snapshots of happiness",
 ];
 
 // Reasons + expanded detail (edit freely)
