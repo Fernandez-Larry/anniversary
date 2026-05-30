@@ -535,7 +535,7 @@ function buildGallery() {
     card.style.transform = `rotate(${rot}deg)`;
 
     const img = document.createElement('img');
-    const ext = ['png', 'png', 'png', 'png', 'jpeg', 'png', 'png', 'png', 'png', 'jpeg', 'png', 'jpeg'];
+    const ext = ['png', 'png', 'png', 'png', 'jpeg', 'png', 'png', 'png', 'jpeg', 'png', 'png', 'jpeg'];
     img.src  = `images/photo${i + 1}.${ext[i]}`;
     img.alt  = CAPTIONS[i];
     img.loading = 'lazy';
