@@ -278,18 +278,30 @@ function resetNoButtonFlow() {
   btnNo.style.maxWidth = '';
 }
 
-// Place NO at a random spot that is always fully on-screen
+// Place NO at a random spot within the welcome-content card
 function placeNoRandom() {
-  // Keep NO button always beside YES - no random roaming
-  placeNoBesideYes();
+  const card = document.querySelector('.welcome-content');
+  if (!card) return;
+  
+  const cardRect = card.getBoundingClientRect();
+  const noW = btnNo.offsetWidth || 90;
+  const noH = btnNo.offsetHeight || 42;
+  const pad = 16;
+  
+  // Get random position within card bounds
+  const maxX = Math.max(0, cardRect.width - noW - pad);
+  const maxY = Math.max(0, cardRect.height - noH - pad);
+  const left = Math.max(pad, Math.random() * maxX);
+  const top  = Math.max(pad, Math.random() * maxY);
+  
+  btnNo.style.left = left + 'px';
+  btnNo.style.top  = top  + 'px';
 }
 
 window.addEventListener('resize', () => {
   window.requestAnimationFrame(() => {
     if (btnNo.classList.contains('evading')) {
-      placeNoBesideYes();
-    } else if (btnNo.style.left || btnNo.style.top) {
-      placeNoBesideYes();
+      placeNoRandom();
     }
   });
 });
@@ -298,14 +310,14 @@ function evadeNo(e) {
   e.preventDefault();
   noAttempts++;
 
-  // On very first interaction: go fixed and immediately sit beside YES
+  // On very first interaction: go fixed and randomly pop in the card
   if (!btnNo.classList.contains('evading')) {
     btnNo.classList.add('evading');
-    placeNoBesideYes();
-    return; // don't fly away on the very first touch
+    placeNoRandom();
+    return; // don't respond again until next click
   }
 
-  // Every 5 clicks snap back to normal flow, otherwise random on-screen
+  // Every 5 clicks snap back to normal flow, otherwise random in card
   if (noAttempts % 5 === 0) {
     resetNoButtonFlow();
   } else {
