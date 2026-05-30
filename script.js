@@ -239,29 +239,32 @@ let yesScale = 1;
 
 // Place NO button right beside YES using YES's screen coordinates
 function placeNoBesideYes() {
+  const groupRect = btnNo.parentElement.getBoundingClientRect();
   const yesRect = btnYes.getBoundingClientRect();
   const noRect  = btnNo.getBoundingClientRect();
   const noW = noRect.width || 90;
   const noH = noRect.height || 42;
   const gap = 12;
 
+  const yesLeft = yesRect.left - groupRect.left;
+  const yesTop  = yesRect.top  - groupRect.top;
+
   let left;
-  const rightSpace = window.innerWidth - yesRect.right - gap - 8;
-  const leftSpace  = yesRect.left - gap - 8;
+  const rightSpace = groupRect.width - yesLeft - yesRect.width - gap - 8;
+  const leftSpace  = yesLeft - gap - 8;
 
   if (rightSpace >= noW) {
-    left = yesRect.right + gap;
+    left = yesLeft + yesRect.width + gap;
   } else if (leftSpace >= noW) {
-    left = yesRect.left - gap - noW;
+    left = yesLeft - gap - noW;
   } else {
-    // fallback: place below or above YES if there isn't enough horizontal room
-    left = Math.max(8, Math.min(window.innerWidth - noW - 8, yesRect.left));
+    left = Math.max(8, Math.min(groupRect.width - noW - 8, yesLeft));
   }
 
-  let top = yesRect.top + (yesRect.height - noH) / 2;
-  if (top < 8) top = yesRect.bottom + gap;
-  if (top + noH > window.innerHeight - 8) top = yesRect.top - noH - gap;
-  top = Math.max(8, Math.min(top, window.innerHeight - noH - 8));
+  let top = yesTop + (yesRect.height - noH) / 2;
+  if (top < 8) top = yesTop + yesRect.height + gap;
+  if (top + noH > groupRect.height - 8) top = yesTop - noH - gap;
+  top = Math.max(8, Math.min(top, groupRect.height - noH - 8));
 
   btnNo.style.left = left + 'px';
   btnNo.style.top  = top  + 'px';
@@ -277,18 +280,19 @@ function resetNoButtonFlow() {
 
 // Place NO at a random spot that is always fully on-screen
 function placeNoRandom() {
-  const safeWidth = Math.max(80, Math.min(280, window.innerWidth - 16));
+  const groupRect = btnNo.parentElement.getBoundingClientRect();
+  const safeWidth = Math.max(80, Math.min(280, groupRect.width - 16));
   if (btnNo.offsetWidth > safeWidth) {
     btnNo.style.width = safeWidth + 'px';
   }
 
-  const noW = Math.min(btnNo.offsetWidth || 90, Math.max(80, window.innerWidth - 16));
+  const noW = Math.min(btnNo.offsetWidth || 90, safeWidth);
   const noH = btnNo.offsetHeight || 42;
   const pad = 16;
-  const maxX = window.innerWidth  - noW - pad;
-  const maxY = window.innerHeight - noH - pad;
-  const left = Math.max(8, Math.min(pad + Math.random() * Math.max(1, maxX - pad), window.innerWidth - noW - 8));
-  const top  = Math.max(8, Math.min(pad + Math.random() * Math.max(1, maxY - pad), window.innerHeight - noH - 8));
+  const maxX = Math.max(8, groupRect.width - noW - pad);
+  const maxY = Math.max(8, groupRect.height - noH - pad);
+  const left = Math.max(8, Math.min(pad + Math.random() * maxX, groupRect.width - noW - 8));
+  const top  = Math.max(8, Math.min(pad + Math.random() * maxY, groupRect.height - noH - 8));
   btnNo.style.left = left + 'px';
   btnNo.style.top  = top  + 'px';
 }
