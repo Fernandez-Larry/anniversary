@@ -442,7 +442,7 @@ function spawnConfetti() {
    PAGE 2 — MEMORY TUNNEL TYPEWRITER
 ══════════════════════════════════════════════════════════════ */
 const TUNNEL_LINES = [
-  "One year.",
+  "Four Years.",
   "Countless laughs.",
   "Countless memories.",
   "And my favourite part was spending it with you.",
